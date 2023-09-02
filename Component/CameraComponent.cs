@@ -25,9 +25,21 @@ public class CameraComponent< T > : EntityComponent< T >
 
   private CameraControls< T > controls;
 
-  public float MoveSmoothing     { get; set; } = 5.0f;
+  private float Scale => Entity.Scale;
+
+  /// <summary>
+  ///   How fast the camera should move to target position when target values change
+  /// </summary>
+  public float MoveSmoothing { get; set; } = 5.0f;
+
+  /// <summary>
+  ///   How fast the camera should move to target position if blocked by obstacles
+  /// </summary>
   public float ObstacleSmoothing { get; set; } = 20.0f;
 
+  /// <summary>
+  ///   Distance from attach point to camera
+  /// </summary>
   public float TargetDistance
   {
     get => targetDistance;
@@ -43,6 +55,12 @@ public class CameraComponent< T > : EntityComponent< T >
     }
   }
 
+  /// <summary>
+  ///   Vertical offset of camera attach point from entity model center
+  /// </summary>
+  /// <remarks>
+  ///   Positive value will move camera up, negative down
+  /// </remarks>
   public float VerticalOffset
   {
     get => verticalOffset;
@@ -57,6 +75,12 @@ public class CameraComponent< T > : EntityComponent< T >
     }
   }
 
+  /// <summary>
+  ///   Horizontal offset of camera attach point from entity model center
+  /// </summary>
+  /// <remarks>
+  ///   Positive value will move camera right, negative left
+  /// </remarks>
   public float HorizontalOffset
   {
     get => horizontalOffset;
@@ -71,8 +95,6 @@ public class CameraComponent< T > : EntityComponent< T >
     }
   }
 
-  private float Scale => Entity.Scale;
-
   protected override void OnActivate()
   {
     base.OnActivate();
@@ -81,11 +103,33 @@ public class CameraComponent< T > : EntityComponent< T >
     controls.CameraComponent = this;
   }
 
+  /// <summary>
+  ///   Adds a new camera mode to priority stack.
+  /// </summary>
+  /// <remarks>
+  ///   <para>
+  ///     Camera uses the mode with highest priority.
+  ///   </para>
+  ///   <para>
+  ///     If multiple modes have the same priority, the last one added will be used.
+  ///   </para>
+  /// </remarks>
   public void AddMode( string mode, int priority = 0 )
   {
     controls.AddMode( mode, priority );
   }
 
+  /// <summary>
+  ///   Removes a camera mode from priority stack.
+  /// </summary>
+  /// <remarks>
+  ///   <para>
+  ///     If mode is not found, nothing happens.
+  ///   </para>
+  ///   <para>
+  ///     Removes all occurrences of mode.
+  ///   </para>
+  /// </remarks>
   public void RemoveMode( string mode )
   {
     controls.RemoveMode( mode );
