@@ -19,8 +19,6 @@ Uses priority stack to manage camera states.
     - Call FrameSimulate() in FrameSimulate() method
     - Use AddMode() and RemoveMode() to switch between camera modes
 
-![create.png](images/create.png)
-
 ``` csharp
 using Sandbox;
 using CameraLibrary;

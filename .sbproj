@@ -5,7 +5,7 @@
   "Ident": "camera_library",
   "Tags": null,
   "Schema": 1,
-  "HasAssets": true,
+  "HasAssets": false,
   "AssetsPath": "",
   "Resources": "",
   "MenuResources": null,
