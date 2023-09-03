@@ -5,10 +5,6 @@ namespace CameraLibrary;
 public class CameraComponent< T > : EntityComponent< T >
   where T : ModelEntity, WithViewAngles
 {
-  private float targetDistance = 80.0f;
-  private float verticalOffset;
-  private float horizontalOffset;
-
   private float smoothTargetDistance;
   private float smoothVerticalOffset;
   private float smoothHorizontalOffset;
@@ -40,20 +36,7 @@ public class CameraComponent< T > : EntityComponent< T >
   /// <summary>
   ///   Distance from attach point to camera
   /// </summary>
-  public float TargetDistance
-  {
-    get => targetDistance;
-    set
-    {
-      targetDistance = value;
-
-      if ( smoothTargetDistance <= 0 )
-      {
-        smoothTargetDistance = value;
-        lastCameraDistance   = value;
-      }
-    }
-  }
+  public float TargetDistance { get; set; } = 80.0f;
 
   /// <summary>
   ///   Vertical offset of camera attach point from entity model center
@@ -61,19 +44,7 @@ public class CameraComponent< T > : EntityComponent< T >
   /// <remarks>
   ///   Positive value will move camera up, negative down
   /// </remarks>
-  public float VerticalOffset
-  {
-    get => verticalOffset;
-    set
-    {
-      verticalOffset = value;
-
-      if ( smoothVerticalOffset <= 0 )
-      {
-        smoothVerticalOffset = value;
-      }
-    }
-  }
+  public float VerticalOffset { get; set; }
 
   /// <summary>
   ///   Horizontal offset of camera attach point from entity model center
@@ -81,19 +52,7 @@ public class CameraComponent< T > : EntityComponent< T >
   /// <remarks>
   ///   Positive value will move camera right, negative left
   /// </remarks>
-  public float HorizontalOffset
-  {
-    get => horizontalOffset;
-    set
-    {
-      horizontalOffset = value;
-
-      if ( smoothHorizontalOffset <= 0 )
-      {
-        smoothHorizontalOffset = value;
-      }
-    }
-  }
+  public float HorizontalOffset { get; set; }
 
   protected override void OnActivate()
   {
@@ -173,6 +132,11 @@ public class CameraComponent< T > : EntityComponent< T >
 
   private float LerpWithSmoothing( float current, float target )
   {
+    if ( current.AlmostEqual( target, 0.1f ) )
+    {
+      return target;
+    }
+
     return current.LerpTo( target, Time.Delta * MoveSmoothing );
   }
 
